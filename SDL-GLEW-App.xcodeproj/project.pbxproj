@@ -82,6 +82,7 @@
 		0EF621A81E3BC5ED00A1BA68 /* GLContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLContext.cpp; sourceTree = "<group>"; };
 		0EF621AA1E3BD22800A1BA68 /* Textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Textures; sourceTree = "<group>"; };
 		0EF621AB1E3BE52A00A1BA68 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
+		0EF7E72F1E533E2800839191 /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Models; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +104,7 @@
 		0E5CF3AF1E34AD9700CCC20C = {
 			isa = PBXGroup;
 			children = (
+				0EF7E72F1E533E2800839191 /* Models */,
 				0EF621AA1E3BD22800A1BA68 /* Textures */,
 				0EC870911E3B8ADF0039D70D /* Shaders */,
 				0E5CF3BA1E34AD9700CCC20C /* SDL-GLEW-App */,

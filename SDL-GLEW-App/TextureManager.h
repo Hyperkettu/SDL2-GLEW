@@ -76,7 +76,8 @@ public:
             return texture;
         }
         
-        return nullptr;
+        // otherwise get the desired texture
+        return m_Textures[filePath];
     }
     
     /**

@@ -191,6 +191,8 @@ public:
         
         m_Plane = createGround<Vertex>("Textures/height.png");
         m_Plane.addTexture(textureManager->getTexture("Textures/grassplain.png"));
+        
+        m_Nano = Model("/nanosuit/nanosuit.obj");
     
         // define spotlight shader
      //   m_glContext->addShaderProgram("Shaders/phong-diffuse-specular.vert", "Shaders/spotLight.frag");
@@ -294,6 +296,8 @@ private:
     Mesh<Vertex> m_Plane;
     Mesh<Vertex> m_Cylinder;
     Mesh<Vertex> m_Sphere;
+    
+    Model m_Nano;
     
     glm::vec3 m_p;
     glm::vec3 m_lightPos;

@@ -19,6 +19,7 @@
 
 #include "GLContext.h"
 #include "Mesh.h"
+#include "TextureManager.h"
 
 namespace Fox {
     
@@ -85,7 +86,7 @@ namespace Fox {
          * @param type Type of the textures
          */
         std::vector<Texture*> loadMaterialTextures(aiMaterial* material, aiTextureType type,
-                                                  std::string typeName);
+                                                   Texture::TextureType texType);
     
         
         std::vector<Mesh<Vertex>> m_Meshes; ///< all meshes of this model
