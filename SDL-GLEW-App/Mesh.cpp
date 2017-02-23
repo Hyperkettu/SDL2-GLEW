@@ -22,7 +22,6 @@ namespace Fox {
         // copy data to vector
         m_Vertices.resize(vertices.size());
         std::copy(vertices.begin(), vertices.end(), m_Vertices.begin());
-        std::cout << "Vertex" << std::endl;
         
         // create vertex buffer object
         glGenBuffers(1, &m_Vbo);
@@ -54,7 +53,6 @@ namespace Fox {
         // copy data to vector
         m_Vertices.resize(vertices.size());
         std::copy(vertices.begin(), vertices.end(), m_Vertices.begin());
-        std::cout << "VertexP" << std::endl;
         
         // create vertex buffer object
         glGenBuffers(1, &m_Vbo);

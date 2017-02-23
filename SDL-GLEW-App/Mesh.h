@@ -387,6 +387,7 @@ private:
     template<class V> static std::vector<V> getPlaneIndices(GLint w, GLint h){
         return std::vector<V>();
     }
+
     
     /**
      * Generates ground vertex data for type Vertex based on height map
@@ -432,7 +433,8 @@ private:
                 GLint heightMap = (GLint)(0.21f * r + 0.72f * g + 0.07f * b);
                 
                 //GLint heightMap = (GLint) r;
-                GLfloat h = (GLfloat)(heightMap/255.0f) * 10.0f - 10.0f;
+                GLfloat h = ((GLfloat)(heightMap/255.0f) * 10.0f - 10.0f ) * 10;
+                
                 Vertex v;
                 v.m_Position = glm::vec3(i*dimension, h, j*dimension);
                 

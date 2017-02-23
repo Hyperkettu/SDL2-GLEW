@@ -13,13 +13,24 @@ namespace Fox {
     void Model::loadModel(std::string path){
     
         Assimp::Importer import;
-        const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+        const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
         
         // check if evertything is loaded properly
-        if(!scene || scene->mFlags | AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-            std::cout << "Assimp error: " << import.GetErrorString() << std::endl;
+        if(!scene) {
+            std::cout << "No scene. Assimp error: " << import.GetErrorString() << std::endl;
             return;
         }
+        
+ /**      if(scene->mFlags | AI_SCENE_FLAGS_INCOMPLETE) {
+            std::cout << "Scene incomplete. Assimp error: " << import.GetErrorString() << std::endl;
+            return;
+        }*/
+        if(!scene->mRootNode){
+            std::cout << "No root node. Assimp error: " << import.GetErrorString() << std::endl;
+            return;
+        }
+        
+        this->directory = path.substr(0, path.find_last_of('/'));
         
         // start processing from root node
         processNode(scene->mRootNode, scene);
@@ -31,7 +42,7 @@ namespace Fox {
         for(GLuint i = 0; i < node->mNumMeshes; i++){
         
             aiMesh* aMesh = scene->mMeshes[node->mMeshes[i]];
-            Mesh<Vertex> mesh = processMesh(aMesh, scene);
+            Mesh<Vertex>* mesh = processMesh(aMesh, scene);
             m_Meshes.push_back(mesh);
         }
         
@@ -41,7 +52,7 @@ namespace Fox {
         }
     }
     
-    Mesh<Vertex> Model::processMesh(aiMesh* mesh, const aiScene* scene){
+    Mesh<Vertex>* Model::processMesh(aiMesh* mesh, const aiScene* scene){
         
         std::vector<Vertex> vertices;
         std::vector<GLuint> indices;
@@ -58,12 +69,14 @@ namespace Fox {
             position.z = mesh->mVertices[i].z;
             vertex.m_Position = position;
             
+            
             // process normals
             glm::vec3 normal;
             normal.x = mesh->mNormals[i].x;
             normal.y = mesh->mNormals[i].y;
             normal.z = mesh->mNormals[i].z;
             vertex.m_Normal = normal;
+           
             
             // does the mesh contain textures coordinates
             if(mesh->mTextureCoords[0]) {
@@ -72,6 +85,7 @@ namespace Fox {
                 uvs.x = mesh->mTextureCoords[0][i].x;
                 uvs.y = mesh->mTextureCoords[0][i].y;
                 vertex.m_TexCoords = uvs;
+                
             }
             else {
                 
@@ -87,12 +101,14 @@ namespace Fox {
             aiFace face = mesh->mFaces[i];
             
             for(GLuint j = 0; j < face.mNumIndices; j++){
-                indices.push_back(face.mIndices[i]);
+                indices.push_back(face.mIndices[j]);
+                
             }
         }
         
-        Mesh<Vertex> m(vertices, indices, GL_STATIC_DRAW);
+        Mesh<Vertex>* m = new Mesh<Vertex>(vertices, indices, GL_STATIC_DRAW);
         
+       
         // process material
         if(mesh->mMaterialIndex >= 0) {
             
@@ -100,11 +116,16 @@ namespace Fox {
             std::vector<Texture*> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, Texture::Diffuse);
             
             // add only first diffuse map
-            m.addTexture(diffuseMaps[0]);
+            if(diffuseMaps.size() > 0)
+            m->addTexture(diffuseMaps[0]);
             
             std::vector<Texture*> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, Texture::Specular);
+            
             // add only first specular map
-            m.addTexture(specularMaps[0]);
+            if(specularMaps.size() > 0)
+                m->addTexture(specularMaps[0]);
+            
+            
         }
         
         return m;
@@ -120,7 +141,10 @@ namespace Fox {
             aiString str;
             material->GetTexture(type, i, &str);
             
-            const GLchar* filePath;
+            std::string filename = std::string(str.C_Str());
+            filename = directory + '/' + filename;
+            
+            const GLchar* filePath = filename.c_str();
             
             Texture* texture;
             TextureManager* textureManager = TextureManager::Instance();

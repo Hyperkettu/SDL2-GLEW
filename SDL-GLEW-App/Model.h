@@ -20,6 +20,7 @@
 #include "GLContext.h"
 #include "Mesh.h"
 #include "TextureManager.h"
+#include "Vector.h"
 
 namespace Fox {
     
@@ -49,7 +50,19 @@ namespace Fox {
         void draw(GLContext* gl) {
             // draw all meshes
             for(GLuint i = 0; i < m_Meshes.size(); i++){
-                m_Meshes[i].draw(gl);
+                m_Meshes[i]->draw(gl);
+            }
+        }
+        
+        void drawWireframe(GLContext* gl){
+            for(GLuint i = 0; i < m_Meshes.size(); i++){
+                m_Meshes[i]->drawWireframe(gl);
+            }
+        }
+        
+        void addTexture(Texture* texture){
+            for(GLuint i = 0; i < m_Meshes.size();i++){
+                m_Meshes[i]->addTexture(texture);
             }
         }
         
@@ -77,7 +90,7 @@ namespace Fox {
          * @param scene aiScene
          * @return Mesh<Vertex>
          */
-        Mesh<Vertex> processMesh(aiMesh* mesh, const aiScene* scene);
+        Mesh<Vertex>* processMesh(aiMesh* mesh, const aiScene* scene);
         
         /**
          * Loads the materials from aiMaterial of given type
@@ -88,8 +101,8 @@ namespace Fox {
         std::vector<Texture*> loadMaterialTextures(aiMaterial* material, aiTextureType type,
                                                    Texture::TextureType texType);
     
-        
-        std::vector<Mesh<Vertex>> m_Meshes; ///< all meshes of this model
+        std::string directory; ///< model file directory
+        std::vector<Mesh<Vertex>*> m_Meshes; ///< all meshes of this model
         
     };
 }

@@ -38,6 +38,7 @@
 #include "InputManager.h"
 #include "TextureManager.h"
 #include "Model.h"
+#include "Skybox.h"
 
 namespace Fox {
     
@@ -100,7 +101,7 @@ public:
         m_InputManager = new InputManager;
         
         // add render contexts
-        m_glContext->addRenderContext(0, 0, (GLfloat)m_ScreenWidth, (GLfloat) m_ScreenHeight, 45.0f, 0.1f, 300.0f);
+        m_glContext->addRenderContext(0, 0, (GLfloat)m_ScreenWidth, (GLfloat) m_ScreenHeight, 45.0f, 0.1f, 5000.0f);
     //    m_glContext->addRenderContext((GLfloat)m_ScreenWidth/(GLfloat)2, (GLfloat)m_ScreenWidth/(GLfloat)2, (GLfloat)m_ScreenWidth/(GLfloat)2, (GLfloat)m_ScreenHeight/(GLfloat)2, 45.0f, 0.1f, 100.0f);
         
      //   m_glContext->addRenderContext(0, (GLfloat)m_ScreenWidth/(GLfloat)2, (GLfloat)m_ScreenWidth/(GLfloat)2, (GLfloat)m_ScreenHeight/(GLfloat)2, 45.0f, 0.1f, 100.0f);
@@ -108,6 +109,9 @@ public:
      //   m_glContext->addRenderContext((GLfloat)m_ScreenWidth/(GLfloat)2, 0, (GLfloat)m_ScreenWidth/(GLfloat)2, (GLfloat)m_ScreenHeight, 45.0f, 0.1f, 100.0f);
         
         // starts the program
+        
+        SDL_SetRelativeMouseMode(SDL_TRUE);
+        
         start();
         
     }
@@ -164,6 +168,16 @@ public:
         
         TextureManager* textureManager = TextureManager::Instance();
         
+        std::vector<const GLchar*> faces;
+        
+        faces.push_back("Textures/Skybox/right.jpg");
+        faces.push_back("Textures/Skybox/left.jpg");
+        faces.push_back("Textures/Skybox/top.jpg");
+        faces.push_back("Textures/Skybox/bottom.jpg");
+        faces.push_back("Textures/Skybox/back.jpg");
+        faces.push_back("Textures/Skybox/front.jpg");
+        m_Skybox = Skybox(faces);
+        
         textureManager->loadTexture("Textures/container.png", Texture::Diffuse);
         textureManager->loadTexture("Textures/grassplain.png", Texture::Diffuse);
         textureManager->loadTexture("Textures/brown.png", Texture::Diffuse);
@@ -171,28 +185,39 @@ public:
         textureManager->loadTexture("Textures/container_specular.png", Texture::Specular);
         textureManager->loadTexture("Textures/white.png", Texture::Specular);
         textureManager->loadTexture("Textures/black.png", Texture::Specular);
+        textureManager->loadTexture("Textures/darkgreen.png", Texture::Diffuse);
+        
         
         m_Cube = createCube<Vertex>();
-        
         
         m_Cube.addTexture(textureManager->getTexture("Textures/container.png"));
         m_Cube.addTexture(textureManager->getTexture("Textures/container_specular.png"));
         
         m_Sphere = createSphere<Vertex>(32, 1.0f);
-        m_Sphere.addTexture(textureManager->getTexture("Textures/grassplain.png"));
+        m_Sphere.addTexture(textureManager->getTexture("Textures/darkgreen.png"));
         m_Sphere.addTexture(textureManager->getTexture("Textures/black.png"));
         
         m_Sphere.computeBoundingSphere(m_Sphere.m_Vertices);
         
         m_CubeLamp = createCube<VertexP>();
         
-        m_Cylinder = createCylinder<Vertex>(32, 4.0f, 1.15f);
+        m_Cylinder = createCylinder<Vertex>(32, 4.0f, 0.25f);
         m_Cylinder.addTexture(textureManager->getTexture("Textures/tree.png"));
         
         m_Plane = createGround<Vertex>("Textures/height.png");
+        mapObjects();
+        
+        
         m_Plane.addTexture(textureManager->getTexture("Textures/grassplain.png"));
         
-        m_Nano = Model("/nanosuit/nanosuit.obj");
+         
+
+      //  m_Nano = Model("Models/house/Farmhouse OBJ.obj");
+      //  m_Nano.addTexture(textureManager->getTexture("Textures/grassplain.png"));
+       // m_Nano.addTexture(textureManager->getTexture("Textures/black.png"));
+        m_Nano = Model("Models/nanosuit/nanosuit.obj");
+        m_Nano.addTexture(textureManager->getTexture("Textures/grassplain.png"));
+        m_Nano.addTexture(textureManager->getTexture("Textures/white.png"));
     
         // define spotlight shader
      //   m_glContext->addShaderProgram("Shaders/phong-diffuse-specular.vert", "Shaders/spotLight.frag");
@@ -238,6 +263,12 @@ public:
         m_glContext->addUniform("view");
         m_glContext->addUniform("projection");
         
+        m_glContext->addShaderProgram("Shaders/skybox.vert", "Shaders/skybox.frag");
+        m_glContext->setCurrentShader(2);
+        m_Skybox.m_SkyboxShaderIndex = 2;
+        m_glContext->addUniform("skybox");
+        m_glContext->addUniform("view");
+        m_glContext->addUniform("projection");
         
       //  m_lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
         m_lightPos = glm::vec3(0.0f, 0.0f, 5.0f);
@@ -251,11 +282,11 @@ public:
     }
     
     void moveMouseForward(){
-        m_glContext->getCurrentRenderContext().m_Camera.moveForward(Time::deltaTime);
+        m_glContext->getCurrentRenderContext().m_Camera.moveForward(10.0f * Time::deltaTime);
     }
     
     void moveMouseBackward(){
-        m_glContext->getCurrentRenderContext().m_Camera.moveBackward(Time::deltaTime);
+        m_glContext->getCurrentRenderContext().m_Camera.moveBackward(10.0f * Time::deltaTime);
     }
     void moveCameraRight(){
         m_glContext->getCurrentRenderContext().m_Camera.moveRight(Time::deltaTime);
@@ -266,11 +297,11 @@ public:
     }
     
     void moveCameraForwardZ(){
-        m_glContext->getCurrentRenderContext().m_Camera.moveForwardZ(Time::deltaTime);
+        m_glContext->getCurrentRenderContext().m_Camera.moveForwardZ(10.0f*Time::deltaTime);
     }
     
     void moveCameraBackwardZ(){
-        m_glContext->getCurrentRenderContext().m_Camera.moveBackwardZ(Time::deltaTime);
+        m_glContext->getCurrentRenderContext().m_Camera.moveBackwardZ(10.0f*Time::deltaTime);
     }
     
     
@@ -289,13 +320,62 @@ public:
         m_IsFullScreen = !m_IsFullScreen;
     }
     
+    GLContext* getGLContext(){
+        return m_glContext;
+    }
+    
+    void mapObjects(){
+        
+        SDL_Surface* image = Texture::readTexture("Textures/objectmap.png");
+        SDL_Surface* imageHeight = Texture::readTexture("Textures/height.png");
+        
+        Uint32* p = (Uint32*) image->pixels;
+        Uint32* p2 = (Uint32*) imageHeight->pixels;
+        
+        for(int x = 0; x < 1000; x++){
+            
+            for(int y = 0; y < 1000; y++){
+                
+                
+                Uint8 r,g,b;
+                SDL_GetRGB(p[y*image->w + x], image->format, &r, &g, &b);
+                GLint value = (GLint)(0.21f * r + 0.72f * g + 0.07f * b);
+                
+                
+                if(g==255){
+                    m_TreeArray[x][y] = 1;
+                    // std::cout << "x: " << x << " y: " << y << " " <<  treeArray[x][y] << std::endl;
+                } else {
+                    m_TreeArray[x][y] = 0;
+                }
+             
+                
+                SDL_GetRGB(p2[y*imageHeight->w + x], imageHeight->format, &r, &g, &b);
+                
+                GLint heightMap = (GLint)(0.21f * r + 0.72f * g + 0.07f * b);
+                GLfloat h = (GLfloat)(heightMap/255.0f) * 10.0f - 10.0f;
+                m_HeightArray[x][y] = h;
+            }
+        }
+        
+        
+        SDL_FreeSurface(image);
+        SDL_FreeSurface(imageHeight);
+        
+    }
+    
 private:
+    
+    Skybox m_Skybox;
     
     FMesh<Vertex> m_Cube;
     FMesh<VertexP> m_CubeLamp;
     Mesh<Vertex> m_Plane;
     Mesh<Vertex> m_Cylinder;
     Mesh<Vertex> m_Sphere;
+    
+    int m_TreeArray[1000][1000];
+    GLfloat m_HeightArray[1000][1000];
     
     Model m_Nano;
     

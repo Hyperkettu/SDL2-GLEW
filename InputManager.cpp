@@ -72,6 +72,11 @@ namespace Fox {
 
                 }
             }
+            
+            // mouse moved
+            if(windowEvent.type == SDL_MOUSEMOTION) {
+                app->getGLContext()->getCurrentRenderContext().m_Camera.rotate(windowEvent.motion.xrel, windowEvent.motion.yrel);
+            }
         }
     
     }

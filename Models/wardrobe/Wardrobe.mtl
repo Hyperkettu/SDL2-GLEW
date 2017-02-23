@@ -1,0 +1,50 @@
+# 3ds Max Wavefront OBJ Exporter v0.94b - (c)2007 guruware
+# File Created: 23.01.2017 10:22:48
+
+newmtl st_wood
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.9882 0.9804 0.9294
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka wood_621.jpg
+	map_Kd wood_621.jpg
+	map_bump -bm 0.3000 wood_621.jpg
+	bump -bm 0.3000 wood_621.jpg
+
+newmtl st_gold
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.9451 0.7725 0.4078
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka gold356.jpg
+	map_Kd gold356.jpg
+	map_bump -bm 0.3000 gold356.jpg
+	bump -bm 0.3000 gold356.jpg
+
+newmtl st_tile
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.9804 0.9529 0.7686
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka TextileX.jpg
+	map_Kd TextileX.jpg
+	map_bump -bm 0.3000 TextileX.jpg
+	bump -bm 0.3000 TextileX.jpg

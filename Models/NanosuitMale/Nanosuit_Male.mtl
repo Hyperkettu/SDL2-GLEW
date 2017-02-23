@@ -1,0 +1,70 @@
+# 
+# 
+newmtl Body_male
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.401600 0.401600 0.401600
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Texture/nanosuit.tga
+map_Ns Texture/nanosuit_spec.tga
+map_Bump Texture/nanosuit_bump.tga
+map_Ks Texture/nanosuit_spec.tga
+
+
+newmtl Helmet_male
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.401600 0.401600 0.401600
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Texture/nanosuit_helmet.tga
+map_Ns Texture/nanosuit_helmet_spec.tga
+map_Bump Texture/nanosuit_helmet_bump.tga
+map_Ks Texture/nanosuit_helmet_spec.tga
+
+
+newmtl NanoMask
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.401600 0.401600 0.401600
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Texture/nanosuit_helm_mask.tga
+map_Ns Texture/nanosuit_helm_mask_spec.tga
+map_Bump Texture/nanosuit_helm_mask_bump.tga
+map_Ks Texture/nanosuit_helm_mask_spec.tga
+
+
+newmtl Neck_male
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.401600 0.401600 0.401600
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Texture/nanosuit_neck.tga
+map_Ns Texture/nanosuit_neck_spec.tga
+map_Bump Texture/nanosuit_neck_bump.tga
+map_Ks Texture/nanosuit_neck_spec.tga
+
+
+newmtl VisirM
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Texture/nanosuit_visir.tga
+map_Bump Texture/nanosuit_visir_bump.tga
+
+

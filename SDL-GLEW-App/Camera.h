@@ -20,6 +20,10 @@ class Camera {
 
 public:
     
+    const GLfloat YAW        = -90.0f;
+    const GLfloat PITCH      =  0.0f;
+    const GLfloat SENSITIVTY =  0.25f;
+    
     /**
      * Creates a camera in position oriented in the front direction with up vector
      *
@@ -29,11 +33,11 @@ public:
      */
     Camera(const glm::vec3 position = glm::vec3(0.0f, 5.0f, 10.0f), const glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f), const glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f)) : m_Position(position), m_Front(front), m_Up(up) {
         
-        m_MovementSpeed = 2.0f;
+        m_MovementSpeed = 20.0f;
         
         m_WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
         
-        m_Front = -position;
+       // m_Front = -position;
         glm::normalize(m_Front);
         
         m_Right = glm::cross(m_Front, m_WorldUp);
@@ -41,6 +45,13 @@ public:
         glm::normalize(m_Right);
         
         m_Up = glm::cross(m_Right, m_Front);
+        
+        m_Yaw = YAW;
+        m_Pitch = PITCH;
+        
+        m_MouseSensitivity = SENSITIVTY;
+        
+        updateBaseVectors();
     }
     
     
@@ -101,6 +112,48 @@ public:
         m_Position += glm::vec3(0, 0, 1) * m_MovementSpeed * deltaTime;
     }
     
+    inline void rotate(int xRel, int yRel){
+    
+        GLfloat xOffset = xRel;
+        GLfloat yOffset = -yRel;
+        
+        xOffset *= m_MouseSensitivity;
+        yOffset *= m_MouseSensitivity;
+        
+        m_Yaw   += xOffset;
+        m_Pitch += yOffset;
+        
+        if (m_Pitch > 89.0f)
+            m_Pitch = 89.0f;
+        if (m_Pitch < -89.0f)
+            m_Pitch = -89.0f;
+        
+    /*    // Make sure that when pitch is out of bounds, screen doesn't get flipped
+        if (constrainPitch)
+        {
+            if (this->Pitch > 89.0f)
+                this->Pitch = 89.0f;
+            if (this->Pitch < -89.0f)
+                this->Pitch = -89.0f;
+        }**/
+        
+        // Update Front, Right and Up Vectors using the updated Eular angles
+        updateBaseVectors();
+    
+    }
+    
+    void updateBaseVectors()
+    {
+        glm::vec3 front;
+        front.x = cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
+        front.y = sin(glm::radians(m_Pitch));
+        front.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
+        m_Front = glm::normalize(front);
+        
+        m_Right = glm::normalize(glm::cross(m_Front, m_WorldUp));
+        m_Up = glm::normalize(glm::cross(m_Right, m_Front));
+    }
+    
     glm::vec3 m_Position; ///< camera position
     glm::vec3 m_Front; ///< camera front
     glm::vec3 m_Up; ///< camera up
@@ -110,6 +163,9 @@ public:
     glm::vec3 m_CenterOfInterest; ///< center of interest
     
     GLfloat m_MovementSpeed; ///< mouse movement speed
+    GLfloat m_MouseSensitivity; ///< mouse sensitivity
+    GLfloat m_Yaw; ///< camera yaw
+    GLfloat m_Pitch; ///< camera pitch
 
 };
 

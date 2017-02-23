@@ -56,21 +56,9 @@ namespace Fox {
         
             m_glContext->setViewPort();
             
-/*            std::vector<glm::vec3> cubePositions;
-            
-            cubePositions.push_back(glm::vec3( 0.0f,  0.0f,  0.0f));
-            cubePositions.push_back(glm::vec3( 2.0f,  5.0f, -15.0f));
-            cubePositions.push_back(glm::vec3(-1.5f, -2.2f, -2.5f));
-            cubePositions.push_back(glm::vec3(-3.8f, -2.0f, -12.3f));
-            cubePositions.push_back(glm::vec3( 2.4f, -0.4f, -3.5f));
-            cubePositions.push_back(glm::vec3(-1.7f,  3.0f, -7.5f));
-            cubePositions.push_back(glm::vec3( 1.3f, -2.0f, -2.5f));
-            cubePositions.push_back(glm::vec3( 1.5f,  2.0f, -2.5f));
-            cubePositions.push_back(glm::vec3( 1.5f,  0.2f, -1.5f));
-            cubePositions.push_back(glm::vec3(-1.3f,  1.0f, -1.5f));
-  */
             std::vector<glm::vec3> spherePositions;
-            spherePositions.push_back(glm::vec3( 0.0f,  0.0f,  0.0f));
+            std::vector<glm::vec3> cylinderPositions;
+          /*  spherePositions.push_back(glm::vec3( 0.0f,  0.0f,  0.0f));
             spherePositions.push_back(glm::vec3( 20.0f,  10.0f, -15.0f));
             spherePositions.push_back(glm::vec3(-15.5f, -2.2f, -2.5f));
             spherePositions.push_back(glm::vec3(-20.8f, -0.0f, -12.3f));
@@ -79,8 +67,24 @@ namespace Fox {
             spherePositions.push_back(glm::vec3( 11.3f, -2.0f, -20.5f));
             spherePositions.push_back(glm::vec3( 15.5f,  6.0f, -2.5f));
             spherePositions.push_back(glm::vec3( 13.5f,  0.2f, -10.5f));
-            spherePositions.push_back(glm::vec3(-8.3f,  1.0f, -1.5f));
+            spherePositions.push_back(glm::vec3(-8.3f,  1.0f, -1.5f));*/
         
+            /*
+            int count = 0;
+            
+            for(int x = -500; x < 500; x++){
+                
+                for(int y = -500; y < 500; y++){
+                    
+                    if (m_TreeArray[x+500][y+500] == 1) {
+                    
+                        spherePositions.push_back(glm::vec3(x, m_HeightArray[x+500][y+500]*10 + 1.9f, y));
+                        cylinderPositions.push_back(glm::vec3(x, m_HeightArray[x+500][y+500]*10 + 0.5f, y));
+                        count++;
+                    }
+                }
+            }*/
+            
             glEnable(GL_DEPTH_TEST);
             
             // use lighting shader
@@ -89,11 +93,12 @@ namespace Fox {
             m_glContext->setCameraPosition("viewPos");
             
             // define directional light
-            m_glContext->setVec3(glm::vec3(0.4f, 0.4f, 0.4f), "dirLight.ambient");
+            m_glContext->setVec3(glm::vec3(0.2f, 0.2f, 0.2f), "dirLight.ambient");
             m_glContext->setVec3(glm::vec3(0.5f, 0.5f, 0.5f), "dirLight.diffuse");
             m_glContext->setVec3(glm::vec3(1.0f, 1.0f, 1.0f), "dirLight.specular");
-           // m_glContext->setVec3(m_glContext->getCurrentRenderContext().m_Camera.m_Front, "dirLight.direction");
-            m_glContext->setVec3(glm::vec3(2.0f, -2.0f, -3.0f), "dirLight.direction");
+          //  m_glContext->setVec3(m_glContext->getCurrentRenderContext().m_Camera.m_Front, "dirLight.direction");
+            m_glContext->setVec3(glm::vec3(2.0f, -1.0f, -3.0f), "dirLight.direction");
+          //  m_glContext->setVec3(glm::vec3(1.0f, -1.0f, -10.0f), "dirLight.direction");
             
             
             // define spot light
@@ -116,8 +121,12 @@ namespace Fox {
             
             
           //  m_Cube.draw(m_glContext, 10, cubePositions);
+           
+            // DRAW TREES
+            /*m_Sphere.draw(m_glContext, count, spherePositions);
+            m_Cylinder.draw(m_glContext, count, cylinderPositions);
+            */
             
-            m_Sphere.draw(m_glContext, 10, spherePositions);
             
             glm::mat4 model;
             
@@ -129,16 +138,25 @@ namespace Fox {
             //m_Cube.draw(m_glContext);
            // m_Cylinder.draw(m_glContext);
             
-            m_glContext->getCurrentRenderContext().updateFrustum(model);
+           // m_glContext->getCurrentRenderContext().updateFrustum(model);
             //bool in = m_glContext->getCurrentRenderContext().m_Frustum.sphereIsInsideFrustum(glm::vec3(0,0,0), 1.0f);
             //m_Sphere.draw(m_glContext);
             
             
             model = glm::mat4();
             m_glContext->setMatrix4fUniform(model, "model");
+            
+            // DRAW GROUND
             m_Plane.draw(m_glContext);
           //  m_Plane.drawWireframe(m_glContext);
       
+            model = glm::mat4();
+            model = glm::rotate(model, (GLfloat)SDL_GetTicks()* 0.00001f * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+           // model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
+           // model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+            m_glContext->setMatrix4fUniform(model, "model");
+            m_Nano.draw(m_glContext);
+          //  m_Nano.drawWireframe(m_glContext);
         
         // use lamp shader
             m_glContext->useShader(1);
@@ -152,6 +170,9 @@ namespace Fox {
             m_glContext->setProjectionUniform("projection");
         
             m_CubeLamp.draw(m_glContext);
+            
+            
+            m_Skybox.draw(m_glContext);
 
             m_glContext->nextRenderContext();
         }
@@ -163,6 +184,7 @@ namespace Fox {
     void Application::clearScreen(){
     
         glClearColor(0.3f, 0.7f, 1.0f, 1.0f);
+       // glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 }

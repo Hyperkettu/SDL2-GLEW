@@ -39,7 +39,7 @@ namespace Fox {
          * Destroy loaded texture
          */
         ~Texture(){
-            std::cout << "delete " << m_Id << std::endl;
+            //std::cout << "delete " << m_Id << std::endl;
             glDeleteTextures(1, &m_Id);
             
         }
@@ -56,6 +56,10 @@ namespace Fox {
                 std::cout << "IMG_Load: " << IMG_GetError() << std::endl;
             }
             return image;
+        }
+        
+        static void freeTexture(SDL_Surface* image){
+            SDL_FreeSurface(image);
         }
         
         /**
@@ -110,7 +114,7 @@ namespace Fox {
         Texture(const GLchar* filePath) {
             
             load(filePath);
-            std::cout << "load " << m_Id << std::endl;
+           // std::cout << "load " << m_Id << std::endl;
         }
         
         GLuint m_Id; ///< texture id

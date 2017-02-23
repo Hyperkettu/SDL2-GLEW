@@ -47,7 +47,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/kettu/Dev/XCode/SDL-GLEW-App"
+      customWorkingDirectory = "/Users/kettu/Dev/XCode/SDL2-GLEW/SDL2-GLEW"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"

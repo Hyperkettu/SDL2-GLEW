@@ -45,7 +45,6 @@ public:
      * Destroys this shader program
      */
     ~ShaderProgram(){
-        std::cout << "delete program" << std::endl;
         glDeleteProgram(m_Id);
     }
     

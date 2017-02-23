@@ -108,6 +108,11 @@ public:
         setMatrix4fUniform(m_RenderContexts[m_CurrentRenderContext].m_Camera.view(), viewName);
     }
     
+    void setViewUniformForSkybox(const GLchar* viewName){
+        // remove translation component from view matrix
+        setMatrix4fUniform(glm::mat4(glm::mat3(m_RenderContexts[m_CurrentRenderContext].m_Camera.view())), viewName);
+    }
+    
     void setCameraPosition(const GLchar* uniformName) {
         setVec3(m_RenderContexts[m_CurrentRenderContext].m_Camera.m_Position, uniformName);
     }

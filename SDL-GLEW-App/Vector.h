@@ -9,6 +9,8 @@
 #ifndef Vector_h
 #define Vector_h
 
+#include <iostream>
+
 #include "glm/glm.hpp"
 
 namespace Fox {
@@ -22,6 +24,14 @@ namespace Fox {
     static glm::vec3 cartesian(const glm::vec4& vector){
         return glm::vec3(vector/vector.w);
     
+    }
+    
+    static void print(const glm::vec3& vec){
+        std::cout << "vec3: " << vec.x << " " << vec.y << " " << vec.z << std::endl;
+    }
+    
+    static void print(const glm::vec2& vec){
+        std::cout << "vec2: " << vec.x << " " << vec.y << " " << std::endl;
     }
   
 }

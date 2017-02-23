@@ -42,7 +42,6 @@ namespace Fox
         glDeleteShader(m_VertexShader);
         glDeleteShader(m_FragmentShader);
     
-        std::cout << "Create program" << std::endl;
     }
     
     ShaderProgram::ShaderProgram(const GLchar* vertexShaderSource, GLint vfSize, const GLchar* geometryShaderSource, GLint gfSize, const GLchar* fragmentShaderSource, GLint ffSize) {
