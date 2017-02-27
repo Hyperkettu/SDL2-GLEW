@@ -107,6 +107,45 @@ namespace Fox {
         glBindVertexArray(0);
     }
     
+    template<>
+    Mesh<VertexPNTTB>::Mesh(std::vector<VertexPNTTB>& vertices, std::vector<GLuint>& indices, GLenum usage){
+    
+        m_Vertices.resize(vertices.size());
+        m_Indices.resize(indices.size());
+        
+        std::copy(vertices.begin(), vertices.end(), m_Vertices.begin());
+        std::copy(indices.begin(), indices.end(), m_Indices.begin());
+        
+        // generate vertex and index buffer objects
+        glGenBuffers(1, &m_Vbo);
+        glGenBuffers(1, &m_Ibo);
+        
+        // create vertex array object
+        glGenVertexArrays(1, &m_Vao);
+        
+        glBindVertexArray(m_Vao);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Ibo);
+        
+        glBufferData(GL_ARRAY_BUFFER, sizeof(VertexPNTTB) * m_Vertices.size(), (const GLvoid*) m_Vertices.data(), usage);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * indices.size(), (const GLvoid*) m_Indices.data(), usage);
+        
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(VertexPNTTB), (GLvoid*) 0);
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(VertexPNTTB), (GLvoid*) (3 * sizeof(GLfloat)));
+        glVertexAttribPointer(2, 2, GL_FLOAT, false, sizeof(VertexPNTTB), (GLvoid*) (6 * sizeof(GLfloat)));
+        glVertexAttribPointer(3, 3, GL_FLOAT, false, sizeof(VertexPNTTB), (GLvoid*) (8 * sizeof(GLfloat)));
+        glVertexAttribPointer(4, 3, GL_FLOAT, false, sizeof(VertexPNTTB), (GLvoid*) (11 * sizeof(GLfloat)));
+        
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
+        glEnableVertexAttribArray(3);
+        glEnableVertexAttribArray(4);
+        
+        glBindVertexArray(0);
+    }
+    
     
     
 }
