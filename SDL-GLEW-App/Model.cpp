@@ -13,7 +13,7 @@ namespace Fox {
     void Model::loadModel(std::string path){
     
         Assimp::Importer import;
-        const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
+        const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals |aiProcess_CalcTangentSpace);
         
         // check if evertything is loaded properly
         if(!scene) {
@@ -92,6 +92,9 @@ namespace Fox {
                 vertex.m_TexCoords = glm::vec2(0.0f, 0.0f);
             }
             
+            float s = mesh->mTangents[i].x;
+            
+            
             
             vertices.push_back(vertex);
         }
@@ -125,7 +128,12 @@ namespace Fox {
             if(specularMaps.size() > 0)
                 m->addTexture(specularMaps[0]);
             
-            
+            std::vector<Texture*> normalMaps = loadMaterialTextures(material, aiTextureType_NORMALS, Texture::Normal);
+            std::cout << normalMaps.size() << std::endl;
+            if(normalMaps.size() > 0){
+                m->addTexture(normalMaps[0]);
+            }
+    
         }
         
         return m;

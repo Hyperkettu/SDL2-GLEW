@@ -70,6 +70,9 @@ public:
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
         SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+        // multisamping
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
         
         // create window
         SDL_Window* window;
@@ -77,7 +80,7 @@ public:
         if(fullscreen){
             window = SDL_CreateWindow(appName.c_str(), 100, 100, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN);
         } else {
-            window = SDL_CreateWindow(appName.c_str(), 100, 100, width, height, SDL_WINDOW_OPENGL);
+            window = SDL_CreateWindow(appName.c_str(), 100, 100, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_INPUT_GRABBED);
         }
         m_IsFullScreen = fullscreen;
         
@@ -110,7 +113,11 @@ public:
         
         // starts the program
         
+        SDL_SetWindowGrab(window, SDL_TRUE);
         SDL_SetRelativeMouseMode(SDL_TRUE);
+        SDL_ShowCursor(SDL_DISABLE);
+        
+        glEnable(GL_MULTISAMPLE);
         
         start();
         
@@ -186,7 +193,7 @@ public:
         textureManager->loadTexture("Textures/white.png", Texture::Specular);
         textureManager->loadTexture("Textures/black.png", Texture::Specular);
         textureManager->loadTexture("Textures/darkgreen.png", Texture::Diffuse);
-        
+        textureManager->loadTexture("Textures/red.png", Texture::Diffuse);
         
         m_Cube = createCube<Vertex>();
         
@@ -205,25 +212,46 @@ public:
         m_Cylinder.addTexture(textureManager->getTexture("Textures/tree.png"));
         
         m_Plane = createGround<Vertex>("Textures/height.png");
+        
+        // map objects to the ground plane
         mapObjects();
+        
+        for(int x = -500; x < 500; x++){
+            
+            for(int y = -500; y < 500; y++){
+                
+                if (m_TreeArray[x+500][y+500] == 1) {
+                    
+                    m_SpherePositions.push_back(glm::vec3(x, m_HeightArray[x+500][y+500]*10 + 1.9f, y));
+                    m_CylinderPositions.push_back(glm::vec3(x, m_HeightArray[x+500][y+500]*10 + 0.5f, y));
+                    
+                }
+            }
+        }
         
         
         m_Plane.addTexture(textureManager->getTexture("Textures/grassplain.png"));
-        
-         
+        m_Plane.addTexture(textureManager->getTexture("Textures/black.png"));
 
       //  m_Nano = Model("Models/house/Farmhouse OBJ.obj");
       //  m_Nano.addTexture(textureManager->getTexture("Textures/grassplain.png"));
        // m_Nano.addTexture(textureManager->getTexture("Textures/black.png"));
         m_Nano = Model("Models/nanosuit/nanosuit.obj");
-        m_Nano.addTexture(textureManager->getTexture("Textures/grassplain.png"));
-        m_Nano.addTexture(textureManager->getTexture("Textures/white.png"));
+      //  m_Nano.addTexture(textureManager->getTexture("Textures/red.png"));
+      //  m_Nano.addTexture(textureManager->getTexture("Textures/grassplain.png"));
+      //  m_Nano.addTexture(textureManager->getTexture("Textures/black.png"));
     
         // define spotlight shader
      //   m_glContext->addShaderProgram("Shaders/phong-diffuse-specular.vert", "Shaders/spotLight.frag");
      //   m_glContext->addShaderProgram("Shaders/phong-diffuse-specular.vert", "Shaders/directional.frag");
        
-        m_glContext->addShaderProgram("Shaders/phong-diffuse-specular.vert", "Shaders/scenelighting.frag");
+       // m_glContext->addShaderProgram("Shaders/phong-diffuse-specular.vert", "Shaders/scenelighting.frag");
+        
+       // m_glContext->addShaderProgram("Shaders/phong-diffuse-specular.vert", "Shaders/scene-blinn.frag");
+        
+        m_glContext->addShaderProgram("Shaders/bumpedDiffuseSpecular.vert", "Shaders/bumpedDiffuseSpecular.frag");
+
+        
         
         m_glContext->addUniform("viewPos");
         
@@ -250,7 +278,7 @@ public:
         m_glContext->addUniform("material.diffuse");
         m_glContext->addUniform("material.specular");
         m_glContext->addUniform("material.shininess");
-        
+        m_glContext->addUniform("material.normalMap");
         
         m_glContext->addUniform("model");
         m_glContext->addUniform("view");
@@ -332,9 +360,9 @@ public:
         Uint32* p = (Uint32*) image->pixels;
         Uint32* p2 = (Uint32*) imageHeight->pixels;
         
-        for(int x = 0; x < 1000; x++){
+        for(int x = 0; x < image->w; x++){
             
-            for(int y = 0; y < 1000; y++){
+            for(int y = 0; y < image->h; y++){
                 
                 
                 Uint8 r,g,b;
@@ -376,6 +404,9 @@ private:
     
     int m_TreeArray[1000][1000];
     GLfloat m_HeightArray[1000][1000];
+    
+    std::vector<glm::vec3> m_SpherePositions;
+    std::vector<glm::vec3> m_CylinderPositions;
     
     Model m_Nano;
     

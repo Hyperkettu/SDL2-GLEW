@@ -69,21 +69,6 @@ namespace Fox {
             spherePositions.push_back(glm::vec3( 13.5f,  0.2f, -10.5f));
             spherePositions.push_back(glm::vec3(-8.3f,  1.0f, -1.5f));*/
         
-            /*
-            int count = 0;
-            
-            for(int x = -500; x < 500; x++){
-                
-                for(int y = -500; y < 500; y++){
-                    
-                    if (m_TreeArray[x+500][y+500] == 1) {
-                    
-                        spherePositions.push_back(glm::vec3(x, m_HeightArray[x+500][y+500]*10 + 1.9f, y));
-                        cylinderPositions.push_back(glm::vec3(x, m_HeightArray[x+500][y+500]*10 + 0.5f, y));
-                        count++;
-                    }
-                }
-            }*/
             
             glEnable(GL_DEPTH_TEST);
             
@@ -97,7 +82,7 @@ namespace Fox {
             m_glContext->setVec3(glm::vec3(0.5f, 0.5f, 0.5f), "dirLight.diffuse");
             m_glContext->setVec3(glm::vec3(1.0f, 1.0f, 1.0f), "dirLight.specular");
           //  m_glContext->setVec3(m_glContext->getCurrentRenderContext().m_Camera.m_Front, "dirLight.direction");
-            m_glContext->setVec3(glm::vec3(2.0f, -1.0f, -3.0f), "dirLight.direction");
+            m_glContext->setVec3(glm::vec3(2.0f, -3.0f, -3.0f), "dirLight.direction");
           //  m_glContext->setVec3(glm::vec3(1.0f, -1.0f, -10.0f), "dirLight.direction");
             
             
@@ -123,19 +108,19 @@ namespace Fox {
           //  m_Cube.draw(m_glContext, 10, cubePositions);
            
             // DRAW TREES
-            /*m_Sphere.draw(m_glContext, count, spherePositions);
-            m_Cylinder.draw(m_glContext, count, cylinderPositions);
-            */
+          //  m_Sphere.draw(m_glContext, m_SpherePositions.size(), m_SpherePositions);
+          //  m_Cylinder.draw(m_glContext, m_CylinderPositions.size(), m_CylinderPositions);
+            
             
             
             glm::mat4 model;
             
-            model = glm::translate(model, m_p);
-           // model = glm::rotate(model, (GLfloat)SDL_GetTicks()* 0.00001f * 30.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-           // model = glm::rotate(model, (GLfloat)SDL_GetTicks()* 0.00001f * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-            m_glContext->setMatrix4fUniform(model, "model");
+          //  model = glm::translate(model, m_p);
+          //  model = glm::rotate(model, (GLfloat)SDL_GetTicks()* 0.00001f * 30.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+          //  model = glm::rotate(model, (GLfloat)SDL_GetTicks()* 0.00001f * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+          //  m_glContext->setMatrix4fUniform(model, "model");
         
-            //m_Cube.draw(m_glContext);
+          //  m_Cube.draw(m_glContext);
            // m_Cylinder.draw(m_glContext);
             
            // m_glContext->getCurrentRenderContext().updateFrustum(model);

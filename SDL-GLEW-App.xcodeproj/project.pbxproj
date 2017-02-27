@@ -10,6 +10,7 @@
 		0E10DFFC1E4F6E14005921E6 /* Frustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E10DFFB1E4F6E14005921E6 /* Frustum.cpp */; };
 		0E1579511E40D35D002FE464 /* RenderContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E1579501E40D35D002FE464 /* RenderContext.cpp */; };
 		0E167D361E3D153700957667 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E167D351E3D153700957667 /* Camera.cpp */; };
+		0E16B53F1E64253B00403364 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E16B53E1E64253B00403364 /* SDL2.framework */; };
 		0E16FCD51E51E986000A36D7 /* libassimp.3.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E16FCD41E51E986000A36D7 /* libassimp.3.3.1.dylib */; };
 		0E16FCD81E51F9CD000A36D7 /* Model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E16FCD71E51F9CD000A36D7 /* Model.cpp */; };
 		0E1997B41E5DC1B30082B684 /* Skybox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E1997B31E5DC1B30082B684 /* Skybox.cpp */; };
@@ -18,7 +19,6 @@
 		0E5CF3BC1E34AD9700CCC20C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E5CF3BB1E34AD9700CCC20C /* main.cpp */; };
 		0E5CF3C41E34ADC500CCC20C /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5CF3C31E34ADC500CCC20C /* OpenGL.framework */; };
 		0E5CF3C61E34ADEB00CCC20C /* libGLEW.2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5CF3C51E34ADEB00CCC20C /* libGLEW.2.0.0.dylib */; };
-		0E5CF3C81E34ADF900CCC20C /* libSDL2-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5CF3C71E34ADF900CCC20C /* libSDL2-2.0.0.dylib */; };
 		0E62D6FD1E34CC750071FFD3 /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E62D6FC1E34CC750071FFD3 /* Application.cpp */; };
 		0E62D6FF1E34CD580071FFD3 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E62D6FE1E34CD580071FFD3 /* InputManager.cpp */; };
 		0EC8708D1E3B84950039D70D /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0EC8708C1E3B84950039D70D /* ResourceManager.cpp */; };
@@ -50,6 +50,8 @@
 		0E167D331E3CDFCF00957667 /* Time.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
 		0E167D341E3D13AF00957667 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		0E167D351E3D153700957667 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		0E16B53C1E64237600403364 /* Frameworks */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Frameworks; path = ../../../../../../usr/local/Frameworks; sourceTree = "<group>"; };
+		0E16B53E1E64253B00403364 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		0E16FCD41E51E986000A36D7 /* libassimp.3.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.3.3.1.dylib; path = ../../../../../usr/local/Cellar/assimp/3.3.1/lib/libassimp.3.3.1.dylib; sourceTree = "<group>"; };
 		0E16FCD61E51EB32000A36D7 /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		0E16FCD71E51F9CD000A36D7 /* Model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Model.cpp; sourceTree = "<group>"; };
@@ -93,10 +95,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E16B53F1E64253B00403364 /* SDL2.framework in Frameworks */,
 				0EF621AC1E3BE52A00A1BA68 /* SDL2_image.framework in Frameworks */,
-				0E5CF3C81E34ADF900CCC20C /* libSDL2-2.0.0.dylib in Frameworks */,
-				0E5CF3C61E34ADEB00CCC20C /* libGLEW.2.0.0.dylib in Frameworks */,
 				0E5CF3C41E34ADC500CCC20C /* OpenGL.framework in Frameworks */,
+				0E5CF3C61E34ADEB00CCC20C /* libGLEW.2.0.0.dylib in Frameworks */,
 				0E16FCD51E51E986000A36D7 /* libassimp.3.3.1.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -169,6 +171,8 @@
 		0E5CF3C21E34ADC500CCC20C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E16B53E1E64253B00403364 /* SDL2.framework */,
+				0E16B53C1E64237600403364 /* Frameworks */,
 				0E16FCD41E51E986000A36D7 /* libassimp.3.3.1.dylib */,
 				0EF621AB1E3BE52A00A1BA68 /* SDL2_image.framework */,
 				0E5CF3C71E34ADF900CCC20C /* libSDL2-2.0.0.dylib */,

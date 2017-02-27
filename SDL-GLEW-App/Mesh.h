@@ -22,7 +22,7 @@
 
 namespace Fox {
     
-    static std::vector<const GLchar*> textureToUniformName = {"material.diffuse", "material.specular", nullptr, nullptr, nullptr, nullptr};
+    static std::vector<const GLchar*> textureToUniformName = {"material.diffuse", "material.specular", nullptr, nullptr, "material.normalMap", nullptr};
     
     class MeshBase {
     public:
@@ -229,6 +229,7 @@ private:
             // bind all existing textures
             for(GLuint i = 0; i < m_Material.m_Textures.size(); i++){
                 
+                
                 Texture* texture = m_Material.m_Textures[i];
                 
                 // if there is a texture
@@ -271,6 +272,21 @@ private:
                 glActiveTexture(GL_TEXTURE0 + i);
                 glBindTexture(GL_TEXTURE_2D, 0);
             }
+        }
+        
+        /*
+         * Updates the vertices
+         *
+         * @param vertices Vertices to add
+         */
+        void updateVertices(const std::vector<Vertex>& vertices) {
+            
+            glBindVertexArray(m_Vao);
+            
+            glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * vertices.size(), (const GLvoid*)vertices.data());
+            
+            glBindVertexArray(0);
         }
         
         /**

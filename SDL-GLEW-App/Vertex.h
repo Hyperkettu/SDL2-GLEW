@@ -83,6 +83,21 @@ namespace Fox {
         glm::vec3 m_Color;
     };
     
+    class VertexPNTTB {
+    
+    public:
+        VertexPNTTB(){}
+        
+        VertexPNTTB(const glm::vec3& position, const glm::vec3& normal, const glm::vec2& tex, const glm::vec3& tangent, const glm::vec3 bitangent) : m_Position(position), m_Normal(normal), m_TexCoords(tex), m_Tangent(tangent), m_Bitangent(bitangent) {}
+        
+        glm::vec3 m_Position;
+        glm::vec3 m_Normal;
+        glm::vec2 m_TexCoords;
+        glm::vec3 m_Tangent;
+        glm::vec3 m_Bitangent;
+    
+    };
+    
     typedef VertexPNT Vertex;
 }
 
