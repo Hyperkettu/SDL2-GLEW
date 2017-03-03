@@ -65,15 +65,15 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 void main()
 {
     // sample normal map
-   // vec3 norm = texture(material.normalMap, TexCoords).rgb;
+    vec3 norm = texture(material.normalMap, TexCoords).rgb;
     
     // transform sampled normal to range [-1, 1]
-   // norm = normalize(norm * 2.0 - 1.0);
+    norm = normalize(norm * 2.0 - vec3(1.0f, 1.0f, 1.0f));//1.0);
     
     // transform normals from tangent space to world space
-   // norm = normalize(TBN * norm);
+    norm = normalize(TBN * norm);
     
-    vec3 norm = normalize(Normal);
+   // vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPosition);
     
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
@@ -108,7 +108,9 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     
    //   return diffuse;
     
+   // return vec3(texture(material.normalMap, TexCoords));
    // return vec3(texture(material.diffuse, TexCoords));
+   // return vec3(texture(material.specular, TexCoords));
 }
 
 // Calculates the color when using a point light.

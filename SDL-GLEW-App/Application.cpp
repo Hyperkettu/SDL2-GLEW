@@ -72,8 +72,8 @@ namespace Fox {
             
             glEnable(GL_DEPTH_TEST);
             
-            // use lighting shader
-            m_glContext->useShader(0);
+            // use lighting shader (diffuse specular)
+            m_glContext->useShader(3);
              
             m_glContext->setCameraPosition("viewPos");
             
@@ -135,10 +135,42 @@ namespace Fox {
             m_Plane.draw(m_glContext);
           //  m_Plane.drawWireframe(m_glContext);
       
+            // use lighting shader (bumped diffuse specular)
+            m_glContext->useShader(0);
+            
+            m_glContext->setCameraPosition("viewPos");
+            
+            // define directional light
+            m_glContext->setVec3(glm::vec3(0.0f, 0.0f, 0.05f), "dirLight.ambient");
+            m_glContext->setVec3(glm::vec3(1.0f, 0.95f, 0.65f), "dirLight.diffuse");
+            m_glContext->setVec3(glm::vec3(1.0f, 1.0f, 1.0f), "dirLight.specular");
+            //  m_glContext->setVec3(m_glContext->getCurrentRenderContext().m_Camera.m_Front, "dirLight.direction");
+            m_glContext->setVec3(glm::vec3(2.0f, -3.0f, 3.0f), "dirLight.direction");
+            //  m_glContext->setVec3(glm::vec3(1.0f, -1.0f, -10.0f), "dirLight.direction");
+            
+            
+            // define spot light
+            m_glContext->setVec3(glm::vec3(0.2f, 0.2f, 0.2f), "spotLight.ambient");
+            m_glContext->setVec3(glm::vec3(0.5f, 0.5f, 0.5f), "spotLight.diffuse");
+            m_glContext->setVec3(glm::vec3(1.0f, 1.0f, 1.0f), "spotLight.specular");
+            
+            m_glContext->setFloat(1.0f, "spotLight.constant");
+            m_glContext->setFloat(0.09f, "spotLight.linear");
+            m_glContext->setFloat(0.032f, "spotLight.quadratic");
+            
+            m_glContext->setFloat(glm::cos(glm::radians(12.5f)), "spotLight.cutOff");
+            m_glContext->setFloat(glm::cos(glm::radians(17.5f)), "spotLight.outerCutOff");
+            
+            m_glContext->setVec3(m_glContext->getCurrentRenderContext().m_Camera.m_Position, "spotLight.position");
+            m_glContext->setVec3(m_glContext->getCurrentRenderContext().m_Camera.m_Front, "spotLight.direction");
+            
+            m_glContext->setViewUniform("view");
+            m_glContext->setProjectionUniform("projection");
+            
             model = glm::mat4();
             model = glm::rotate(model, (GLfloat)SDL_GetTicks()* 0.00001f * 50.0f, glm::vec3(0.0f, 1.0f, 0.0f));
            // model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
-           // model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+            model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
             m_glContext->setMatrix4fUniform(model, "model");
             m_Nano.draw(m_glContext);
           //  m_Nano.drawWireframe(m_glContext);

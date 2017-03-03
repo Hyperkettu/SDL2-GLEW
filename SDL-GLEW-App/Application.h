@@ -234,12 +234,15 @@ public:
         m_Plane.addTexture(textureManager->getTexture("Textures/grassplain.png"));
         m_Plane.addTexture(textureManager->getTexture("Textures/black.png"));
 
-      //  m_Nano = Model("Models/house/Farmhouse OBJ.obj", true);
+        m_Nano = Model("Models/house/Farmhouse OBJ.obj", true);
+      //  m_Nano = Model("Models/throne/Duke_Throne.obj", true);
       //  m_Nano.addTexture(textureManager->getTexture("Textures/grassplain.png"));
        // m_Nano.addTexture(textureManager->getTexture("Textures/black.png"));
         
+      //  m_Nano = Model("Models/NanosuitMale/Nanosuit_Male.obj", true);
+        
        // textureManager->printAll(Texture::Normal);
-          m_Nano = Model("Models/nanosuit/nanosuit.obj", true);
+       //   m_Nano = Model("Models/nanosuit/nanosuit.obj", true);
         
        // m_Nano.addTexture(textureManager->getTexture("Models/nanosuit/arm_showroom_ddn.png"));
       //  m_Nano.addTexture(textureManager->getTexture("Textures/red.png"));
@@ -302,6 +305,42 @@ public:
         m_glContext->addUniform("skybox");
         m_glContext->addUniform("view");
         m_glContext->addUniform("projection");
+        
+        
+        m_glContext->addShaderProgram("Shaders/phong-diffuse-specular.vert", "Shaders/scene-blinn.frag");
+        m_glContext->setCurrentShader(3);
+        
+        m_glContext->addUniform("viewPos");
+        
+        // setup spot light
+        m_glContext->addUniform("spotLight.position");
+        m_glContext->addUniform("spotLight.direction");
+        m_glContext->addUniform("spotLight.ambient");
+        m_glContext->addUniform("spotLight.diffuse");
+        m_glContext->addUniform("spotLight.specular");
+        m_glContext->addUniform("spotLight.constant");
+        m_glContext->addUniform("spotLight.linear");
+        m_glContext->addUniform("spotLight.quadratic");
+        m_glContext->addUniform("spotLight.cutOff");
+        m_glContext->addUniform("spotLight.outerCutOff");
+        
+        // setup directional light
+        m_glContext->addUniform("dirLight.direction");
+        m_glContext->addUniform("dirLight.ambient");
+        m_glContext->addUniform("dirLight.diffuse");
+        m_glContext->addUniform("dirLight.specular");
+        
+        
+        // setup material
+        m_glContext->addUniform("material.diffuse");
+        m_glContext->addUniform("material.specular");
+        m_glContext->addUniform("material.shininess");
+        m_glContext->addUniform("material.normalMap");
+        
+        m_glContext->addUniform("model");
+        m_glContext->addUniform("view");
+        m_glContext->addUniform("projection");
+        
         
       //  m_lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
         m_lightPos = glm::vec3(0.0f, 0.0f, 5.0f);
