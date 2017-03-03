@@ -78,11 +78,11 @@ namespace Fox {
             m_glContext->setCameraPosition("viewPos");
             
             // define directional light
-            m_glContext->setVec3(glm::vec3(0.2f, 0.2f, 0.2f), "dirLight.ambient");
-            m_glContext->setVec3(glm::vec3(0.5f, 0.5f, 0.5f), "dirLight.diffuse");
+            m_glContext->setVec3(glm::vec3(0.0f, 0.0f, 0.05f), "dirLight.ambient");
+            m_glContext->setVec3(glm::vec3(1.0f, 0.95f, 0.65f), "dirLight.diffuse");
             m_glContext->setVec3(glm::vec3(1.0f, 1.0f, 1.0f), "dirLight.specular");
           //  m_glContext->setVec3(m_glContext->getCurrentRenderContext().m_Camera.m_Front, "dirLight.direction");
-            m_glContext->setVec3(glm::vec3(2.0f, -3.0f, -3.0f), "dirLight.direction");
+            m_glContext->setVec3(glm::vec3(2.0f, -3.0f, 3.0f), "dirLight.direction");
           //  m_glContext->setVec3(glm::vec3(1.0f, -1.0f, -10.0f), "dirLight.direction");
             
             
@@ -108,8 +108,8 @@ namespace Fox {
           //  m_Cube.draw(m_glContext, 10, cubePositions);
            
             // DRAW TREES
-          //  m_Sphere.draw(m_glContext, m_SpherePositions.size(), m_SpherePositions);
-          //  m_Cylinder.draw(m_glContext, m_CylinderPositions.size(), m_CylinderPositions);
+            m_Sphere.draw(m_glContext, m_SpherePositions.size(), m_SpherePositions);
+            m_Cylinder.draw(m_glContext, m_CylinderPositions.size(), m_CylinderPositions);
             
             
             

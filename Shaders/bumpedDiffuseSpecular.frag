@@ -47,6 +47,7 @@ struct SpotLight {
 in vec3 FragPosition;
 in vec3 Normal;
 in vec2 TexCoords;
+in mat3 TBN;
 
 out vec4 color;
 
@@ -63,8 +64,15 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
 {
+    // sample normal map
+   // vec3 norm = texture(material.normalMap, TexCoords).rgb;
     
-    // Properties
+    // transform sampled normal to range [-1, 1]
+   // norm = normalize(norm * 2.0 - 1.0);
+    
+    // transform normals from tangent space to world space
+   // norm = normalize(TBN * norm);
+    
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPosition);
     
@@ -73,7 +81,7 @@ void main()
     //  for(int i = 0; i < NR_POINT_LIGHTS; i++)
     //      result += CalcPointLight(pointLights[i], norm, FragPosition, viewDir);
     
-    result += CalcSpotLight(spotLight, norm, FragPosition, viewDir);
+    //result += CalcSpotLight(spotLight, norm, FragPosition, viewDir);
     
     // gamma correction
     result = pow(result, vec3(1.0/2.2));
@@ -98,7 +106,9 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
     return (ambient + diffuse + specular);
     
-    //  return ambient;
+   //   return diffuse;
+    
+   // return vec3(texture(material.diffuse, TexCoords));
 }
 
 // Calculates the color when using a point light.

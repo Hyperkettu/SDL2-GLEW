@@ -33,6 +33,10 @@ namespace Fox {
             m_Material.m_Textures = std::vector<Texture*>(Texture::TextureType_Max);
         }
         
+        virtual void draw(GLContext* gl){}
+        
+        virtual void drawWireframe(GLContext* gl){}
+        
         
         /**
          * Adds a texture of certain type to this mesh's material

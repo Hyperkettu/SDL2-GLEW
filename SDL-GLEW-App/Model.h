@@ -38,8 +38,8 @@ namespace Fox {
          *
          * @param path Path to the model data
          */
-        Model(GLchar* path){
-            loadModel(path);
+        Model(GLchar* path, GLboolean bumpMapping = false){
+            loadModel(path, bumpMapping);
         }
         
         /**
@@ -73,7 +73,7 @@ namespace Fox {
          *
          * @param path Path of the model
          */
-        void loadModel(std::string path);
+        void loadModel(std::string path, GLboolean bumpMapping = false);
         
         /**
          * Processes an aiNode
@@ -81,7 +81,7 @@ namespace Fox {
          * @param node aiNode to be processed
          * @param scene aiScene
          */
-        void processNode(aiNode* node, const aiScene* scene);
+        void processNode(aiNode* node, const aiScene* scene, GLboolean bumpMapping = false);
         
         /**
          * Processes an aiMesh to Mesh<Vertex>
@@ -91,6 +91,8 @@ namespace Fox {
          * @return Mesh<Vertex>
          */
         Mesh<Vertex>* processMesh(aiMesh* mesh, const aiScene* scene);
+        
+        Mesh<VertexPNTTB>* processBumpedMesh(aiMesh* mesh, const aiScene* scene);
         
         /**
          * Loads the materials from aiMaterial of given type
@@ -102,7 +104,7 @@ namespace Fox {
                                                    Texture::TextureType texType);
     
         std::string directory; ///< model file directory
-        std::vector<Mesh<Vertex>*> m_Meshes; ///< all meshes of this model
+        std::vector<MeshBase*> m_Meshes; ///< all meshes of this model
         
     };
 }

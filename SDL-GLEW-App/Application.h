@@ -194,6 +194,7 @@ public:
         textureManager->loadTexture("Textures/black.png", Texture::Specular);
         textureManager->loadTexture("Textures/darkgreen.png", Texture::Diffuse);
         textureManager->loadTexture("Textures/red.png", Texture::Diffuse);
+
         
         m_Cube = createCube<Vertex>();
         
@@ -233,10 +234,14 @@ public:
         m_Plane.addTexture(textureManager->getTexture("Textures/grassplain.png"));
         m_Plane.addTexture(textureManager->getTexture("Textures/black.png"));
 
-      //  m_Nano = Model("Models/house/Farmhouse OBJ.obj");
+      //  m_Nano = Model("Models/house/Farmhouse OBJ.obj", true);
       //  m_Nano.addTexture(textureManager->getTexture("Textures/grassplain.png"));
        // m_Nano.addTexture(textureManager->getTexture("Textures/black.png"));
-        m_Nano = Model("Models/nanosuit/nanosuit.obj");
+        
+       // textureManager->printAll(Texture::Normal);
+          m_Nano = Model("Models/nanosuit/nanosuit.obj", true);
+        
+       // m_Nano.addTexture(textureManager->getTexture("Models/nanosuit/arm_showroom_ddn.png"));
       //  m_Nano.addTexture(textureManager->getTexture("Textures/red.png"));
       //  m_Nano.addTexture(textureManager->getTexture("Textures/grassplain.png"));
       //  m_Nano.addTexture(textureManager->getTexture("Textures/black.png"));

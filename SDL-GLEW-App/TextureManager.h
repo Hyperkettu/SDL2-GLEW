@@ -66,9 +66,11 @@ public:
      * @return loaded texture
      */
     Texture* loadTexture(const GLchar* filePath, Texture::TextureType type){
-    
+        
+        auto element = m_Textures.find(filePath);
+        
         // if texture has not been loaded yet, load it
-        if(m_Textures.find(filePath) == m_Textures.end()){
+        if(element == m_Textures.end()){
             
             Texture* texture = new Texture(filePath);
             texture->m_Type = type;
@@ -77,7 +79,7 @@ public:
         }
         
         // otherwise get the desired texture
-        return m_Textures[filePath];
+        return element->second; //m_Textures.find(filePath)->second;//m_Textures[filePath];
     }
     
     /**
@@ -87,10 +89,24 @@ public:
         return m_Textures.find(filePath)->second;
     }
     
+    void printAll(Texture::TextureType type){
+    
+        std::cout << "Textures loaded: " << std::endl;
+       // for(std::pair<const GLchar*, Texture*> i : m_Textures){
+        for(std::pair<std::string, Texture*> i : m_Textures){
+        
+            if(i.second->m_Type == type)
+            std::cout << i.first << " " << i.second->m_Type << " " << i.second->m_Id << std::endl;
+            
+        }
+    
+    }
+    
 private:
     static TextureManager* m_Singleton; ///< texture manager
     
-    std::unordered_map<const GLchar*, Texture*> m_Textures; ///< all textures
+    //std::unordered_map<const GLchar*, Texture*> m_Textures; ///< all textures
+    std::unordered_map<std::string, Texture*> m_Textures;
 };
 
 }
