@@ -39,6 +39,7 @@
 #include "TextureManager.h"
 #include "Model.h"
 #include "Skybox.h"
+#include "ShadowMap.h"
 
 namespace Fox {
     
@@ -118,6 +119,9 @@ public:
         SDL_ShowCursor(SDL_DISABLE);
         
         glEnable(GL_MULTISAMPLE);
+        
+        // init shadow map
+        m_ShadowMap = new ShadowMap;
         
         start();
         
@@ -234,7 +238,7 @@ public:
         m_Plane.addTexture(textureManager->getTexture("Textures/grassplain.png"));
         m_Plane.addTexture(textureManager->getTexture("Textures/black.png"));
 
-        m_Nano = Model("Models/house/Farmhouse OBJ.obj", true);
+      //  m_Nano = Model("Models/house/Farmhouse OBJ.obj", true);
       //  m_Nano = Model("Models/throne/Duke_Throne.obj", true);
       //  m_Nano.addTexture(textureManager->getTexture("Textures/grassplain.png"));
        // m_Nano.addTexture(textureManager->getTexture("Textures/black.png"));
@@ -242,7 +246,7 @@ public:
       //  m_Nano = Model("Models/NanosuitMale/Nanosuit_Male.obj", true);
         
        // textureManager->printAll(Texture::Normal);
-       //   m_Nano = Model("Models/nanosuit/nanosuit.obj", true);
+          m_Nano = Model("Models/nanosuit/nanosuit.obj", true);
         
        // m_Nano.addTexture(textureManager->getTexture("Models/nanosuit/arm_showroom_ddn.png"));
       //  m_Nano.addTexture(textureManager->getTexture("Textures/red.png"));
@@ -341,16 +345,27 @@ public:
         m_glContext->addUniform("view");
         m_glContext->addUniform("projection");
         
+        m_glContext->addShaderProgram("Shaders/shadowMapDepth.vert", "Shaders/shadowMapDepth.frag");
+        m_glContext->setCurrentShader(4);
         
-      //  m_lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
-        m_lightPos = glm::vec3(0.0f, 0.0f, 5.0f);
+        m_glContext->addUniform("model");
+        m_glContext->addUniform("lightSpaceMatrix");
+        
+        m_glContext->addShaderProgram("Shaders/visualDepthMap.vert", "Shaders/visualDepthMap.frag");
+        m_glContext->setCurrentShader(5);
+        
+        m_glContext->addUniform("depthMap");
      
     }
+    
+    void renderScene();
+    
+    void renderSceneToDepthBuffer();
     
     void SetContainerPositionToMousePosition(){
         
         //m_p = m_glContext->getCurrentRenderContext().castRay(m_InputManager->m_MouseX, m_ScreenHeight - m_InputManager->m_MouseY);
-        m_p = m_glContext->getRenderContextOfIndex(0).castRay(m_InputManager->m_MouseX, m_ScreenHeight - m_InputManager->m_MouseY);
+     //   m_p = m_glContext->getRenderContextOfIndex(0).castRay(m_InputManager->m_MouseX, m_ScreenHeight - m_InputManager->m_MouseY);
     }
     
     void moveMouseForward(){
@@ -439,6 +454,7 @@ public:
 private:
     
     Skybox m_Skybox;
+    ShadowMap* m_ShadowMap;
     
     FMesh<Vertex> m_Cube;
     FMesh<VertexP> m_CubeLamp;
@@ -453,9 +469,6 @@ private:
     std::vector<glm::vec3> m_CylinderPositions;
     
     Model m_Nano;
-    
-    glm::vec3 m_p;
-    glm::vec3 m_lightPos;
     
     bool m_IsFullScreen; ///< tells if this application is in full screen mode
     

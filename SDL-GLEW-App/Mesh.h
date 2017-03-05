@@ -35,6 +35,8 @@ namespace Fox {
         
         virtual void draw(GLContext* gl){}
         
+        virtual void drawToDepthBuffer(GLContext* gl){}
+        
         virtual void drawWireframe(GLContext* gl){}
         
         
@@ -114,6 +116,14 @@ template <class V = Vertex> class FMesh : public MeshBase {
      
     }
     
+    void drawToDepthBuffer(GLContext* gl){
+        // render this mesh
+        glBindVertexArray(m_Vao);
+        glDrawArrays(GL_TRIANGLES, 0, m_Vertices.size());
+        glBindVertexArray(0);
+    
+    }
+    
     void draw(GLContext* gl, GLuint n, std::vector<glm::vec3>& positions){
     
         // bind all existing textures
@@ -139,8 +149,8 @@ template <class V = Vertex> class FMesh : public MeshBase {
         {
             glm::mat4 model = glm::mat4();
             model = glm::translate(model, positions[i]);
-            GLfloat angle = 20.0f * i;
-            model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
+          //  GLfloat angle = 20.0f * i;
+          //  model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
             gl->setMatrix4fUniform(model, "model");
             
             glDrawArrays(GL_TRIANGLES, 0, m_Vertices.size());
@@ -154,6 +164,24 @@ template <class V = Vertex> class FMesh : public MeshBase {
             glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
+    }
+    
+    void drawToDepthBuffer(GLContext* gl, std::vector<glm::vec3>& positions){
+        
+        glBindVertexArray(m_Vao);
+        
+        // render n times
+        for(GLuint i = 0; i < positions.size(); i++)
+        {
+            glm::mat4 model = glm::mat4();
+            model = glm::translate(model, positions[i]);
+            gl->setMatrix4fUniform(model, "model");
+            
+            glDrawArrays(GL_TRIANGLES, 0, m_Vertices.size());
+        }
+        
+        glBindVertexArray(0);
+        
     }
     
     void drawWireframe(GLContext* gl){
@@ -213,6 +241,12 @@ private:
                 glActiveTexture(GL_TEXTURE0 + i);
                 glBindTexture(GL_TEXTURE_2D, 0);
             }
+        }
+        
+        void drawToDepthBuffer(GLContext* gl){
+            glBindVertexArray(m_Vao);
+            glDrawElements(GL_TRIANGLES, (GLsizei) m_Indices.size(), GL_UNSIGNED_INT, 0); //BUFFER_OFFSET(0));
+            glBindVertexArray(0);
         }
         
         void drawWireframe(GLContext* gl){
@@ -277,6 +311,24 @@ private:
                 glBindTexture(GL_TEXTURE_2D, 0);
             }
         }
+        
+        void drawToDepthBuffer(GLContext* gl, std::vector<glm::vec3>& positions) {
+            
+            glBindVertexArray(m_Vao);
+            
+            // render n times
+            for(GLuint i = 0; i < positions.size(); i++)
+            {
+                glm::mat4 model = glm::mat4();
+                model = glm::translate(model, positions[i]);
+                gl->setMatrix4fUniform(model, "model");
+                glDrawElements(GL_TRIANGLES, (GLsizei) m_Indices.size(), GL_UNSIGNED_INT, 0);
+            }
+            
+            glBindVertexArray(0);
+        }
+        
+        
         
         /*
          * Updates the vertices
